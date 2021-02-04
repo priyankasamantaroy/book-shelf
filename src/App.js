@@ -18,14 +18,16 @@ class App extends React.Component {
       this.setState(()=> ({books}))
     })
   }
+  //bookshelf array that hods self title
+  bookshelfs = ["Currently Reading","Want to Read","Read"]
 
   render() {
     //console.log('books array',this.state.books)
     return (
       <div className="app">
-      <Rack books={this.state.books} bookselftitle="Currently Reading" shelfname="currentlyReading"/>
-      <Rack books={this.state.books} bookselftitle="Want to Read" shelfname="wantToRead"/>
-      <Rack books={this.state.books} bookselftitle="Read" shelfname="read"/>  
+      <Rack books={this.state.books} bookshelfs={this.bookshelfs} bookselftitle="Currently Reading" shelfname="currentlyReading"/>
+      <Rack books={this.state.books} bookshelfs={this.bookshelfs} bookselftitle="Want to Read" shelfname="wantToRead"/>
+      <Rack books={this.state.books} bookshelfs={this.bookshelfs} bookselftitle="Read" shelfname="read"/>  
       </div>
       )
   }
