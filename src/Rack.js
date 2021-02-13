@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 
 export class Rack extends Component {
+
+ 
     render() {
        // console.log("title",typeof(this.props.bookselftitle));
        //destructuring
        const {books,bookselftitle,shelfname, bookshelfs} = this.props;
-        return (    
-                
+       const {changeshelf} = this.props;
+        return ( 
+          
+          <div className="list-books">
+            <div className="list-books-title">
+              <h1>MyReads</h1>
+            </div>                
             <div className="list-books-content">
               <div>
                 <div className="bookshelf">
@@ -20,11 +27,11 @@ export class Rack extends Component {
                             <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer"> 
-                            <select>
+                            <select key={book.id.toString()}>
                             <option value="none" disabled> Move to...</option>                       
                              {bookshelfs.map((bookshelf)=>(                      
                                bookshelf!== bookselftitle ?                               
-                               <option value={book.shelf}>{bookshelf}</option> : ""))}
+                               <option id={book.id} value={book.shelf} onChange={(e)=>changeshelf(e.target.value,e.target.id)}>{bookshelf}</option> : ""))}
                              </select> 
                             </div>
                           </div>
@@ -37,7 +44,8 @@ export class Rack extends Component {
                     </div>
                 </div>
             </div>
-        </div>                         
+        </div>  
+      </div>                       
             
         )
     }
