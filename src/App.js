@@ -8,10 +8,7 @@ class App extends React.Component {
   state = {
     books: []
    // showSearchPage: false
-
      //will add the resulting searched books array from search API
-
-
   }
 
   
@@ -23,19 +20,14 @@ class App extends React.Component {
       this.setState(()=> ({books}))
     })
   }
-  //shelfupdate
-  changeshelf=(id,value)=>{
-    console.log(id,value);
-    BooksAPI.get(id)
-    .then((book)=>(
-     BooksAPI.update(book)
-     .then((shelf)=> {
-       this.setState(()=>({shelf : value}))
-     }
-     )))    
+
+  //update state with newid Book
+  updateStateofBooks=(book)=>{
+    this.setState({books: [...this.state.books.concat(book)]})
+    console.log("booksArraynew",this.state.books);
   }
 
- 
+    
   //bookshelf array that hods self title
   bookshelfs = ["Currently Reading","Want to Read","Read"]
 
@@ -43,7 +35,7 @@ class App extends React.Component {
   console.log('books search array',this.state.books)
     return (
       <div className="app">
-      <Search searchBooks={this.state.searchBooks} bookshelfs={this.bookshelfs} searchResults={this.searchResults} bookselftitle="Search Results" shelfname="searchResults" changeshelf={this.changeshelf}/>      
+      <Search updateStateofBooks={this.updateStateofBooks} searchBooks={this.state.searchBooks} bookshelfs={this.bookshelfs} searchResults={this.searchResults} bookselftitle="Search Results" shelfname="searchResults" changeshelf={this.changeshelf}/>      
       <Rack books={this.state.books} bookshelfs={this.bookshelfs} changeshelf={this.changeshelf} bookselftitle="Currently Reading" shelfname="currentlyReading"/>
       <Rack books={this.state.books} bookshelfs={this.bookshelfs} bookselftitle="Want to Read" shelfname="wantToRead"/>
       <Rack books={this.state.books} bookshelfs={this.bookshelfs} bookselftitle="Read" shelfname="read"/>  

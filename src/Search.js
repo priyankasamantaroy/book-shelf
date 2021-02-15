@@ -7,7 +7,9 @@ export class Search extends Component {
     state = {
         query: "",
         showSearchPage: false,
-        searchBooks :[]
+        searchBooks :[],
+        
+        
     }
 
     
@@ -24,12 +26,32 @@ export class Search extends Component {
       this.setState(()=> ({searchBooks: searchBooks}))
     })
   }
+
+  //change shelf
+  changeshelf=(e)=>{
+    let id = e.target.id;
+    let shelf = e.target.value;  
+    console.log("My Value", id, shelf);
+
+      //remove id from searchbooks that has selected and update searchbooks list
+      this.setState({searchBooks: [...this.state.searchBooks.filter(searchbook => searchbook.id !== id)]})
+      
+  //update the removed id with a book object along with shelf value 
+    BooksAPI.get(id)
+    .then((book)=>{
+      book.shelf=shelf
+      return book
+    })
+    .then((book)=> this.props.updateStateofBooks(book))
+  //concate the updated new book with bookslist
   
+  //end update
 
-
+  }//end of changeshelf
+      
 
     render() {
-console.log('query', this.state.query);
+console.log('res', this.state.data);
 console.log('searchBooks', this.state.searchBooks);
 console.log('searchBooks', typeof(this.state.searchBooks));
 
@@ -37,7 +59,7 @@ console.log('searchBooks', typeof(this.state.searchBooks));
 //console.log("searching",this.props.searchResults("the"));
 //destructuring
 //const {searchBooks,bookselftitle,shelfname,bookshelfs,changeshelf} = this.props;
-const {bookselftitle,shelfname,bookshelfs,changeshelf} = this.props;
+const {bookselftitle,shelfname,bookshelfs} = this.props;
         return (
             <div>
 {this.state.showSearchPage ? 
@@ -60,11 +82,11 @@ const {bookselftitle,shelfname,bookshelfs,changeshelf} = this.props;
                             <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer"> 
-                            <select key={book.id.toString()}>
+                            <select id={book.id} onChange={(e)=> this.changeshelf(e)}>
                             <option value="none" disabled> Move to...</option>                       
                              {bookshelfs.map((bookshelf)=>(                      
                                bookshelf!== "" ?                               
-                               <option id={book.id} value={book.shelf} onChange={(e)=>changeshelf(e.target.value,e.target.id)}>{bookshelf}</option> : ""))}
+                               <option value={bookshelf==='Currently Reading' ? 'currentlyReading' : bookshelf==='Want to Read' ? 'wantToRead' : 'read'}>{bookshelf}</option> : ""))}
                              </select> 
                             </div>
                           </div>
