@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
+import * as BooksAPI from './BooksAPI';
 
 export class Rack extends Component {
 
- 
     render() {
        // console.log("title",typeof(this.props.bookselftitle));
        //destructuring
-       const {books,bookselftitle,shelfname, bookshelfs} = this.props;
-       const {changeshelf} = this.props;
+       const {books,bookselftitle,shelfname, bookshelfs, shelfToshelf} = this.props;
+      // const {changeshelf} = this.props;
         return ( 
           
           <div className="list-books">
@@ -27,11 +27,11 @@ export class Rack extends Component {
                             <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer"> 
-                            <select key={book.id.toString()}>
-                            <option value="none" disabled> Move to...</option>                       
+                            <select id={book.id} onChange={(e)=>shelfToshelf(e)}>
+                            <option value="none" selected> Move to...</option>                       
                              {bookshelfs.map((bookshelf)=>(                      
                                bookshelf!== bookselftitle ?                               
-                               <option id={book.id} value={book.shelf} onChange={(e)=>changeshelf(e.target.value,e.target.id)}>{bookshelf}</option> : ""))}
+                               <option  value={bookshelf==="Currently Reading" ? "currentlyReading" : bookshelf==="Want to Read" ? 'wantToRead' : 'read'} >{bookshelf}</option> : ""))}
                              </select> 
                             </div>
                           </div>

@@ -33,8 +33,8 @@ export class Search extends Component {
     let shelf = e.target.value;  
     console.log("My Value", id, shelf);
 
-      //remove id from searchbooks that has selected and update searchbooks list
-      this.setState({searchBooks: [...this.state.searchBooks.filter(searchbook => searchbook.id !== id)]})
+    //remove id from searchbooks that has selected and update searchbooks list
+    this.setState({searchBooks: [...this.state.searchBooks.filter(searchbook => searchbook.id !== id)]})
       
   //update the removed id with a book object along with shelf value 
     BooksAPI.get(id)
@@ -83,7 +83,7 @@ const {bookselftitle,shelfname,bookshelfs} = this.props;
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer"> 
                             <select id={book.id} onChange={(e)=> this.changeshelf(e)}>
-                            <option value="none" disabled> Move to...</option>                       
+                           <option value="none" selected> Select Below Options</option>                 
                              {bookshelfs.map((bookshelf)=>(                      
                                bookshelf!== "" ?                               
                                <option value={bookshelf==='Currently Reading' ? 'currentlyReading' : bookshelf==='Want to Read' ? 'wantToRead' : 'read'}>{bookshelf}</option> : ""))}
