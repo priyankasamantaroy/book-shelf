@@ -6,15 +6,11 @@ import Search from './Search';
 import Rack from './Rack';
 import {Route} from 'react-router-dom'
 
-
-
 class App extends React.Component {
 
   state = {
-    books: [],
-    showSearchPage: false
-     //will add the resulting searched books array from search API
-  }  
+    books: []
+  };
   
   //using BooksAPI getALL method that fetch books data
   componentDidMount(){
@@ -22,47 +18,41 @@ class App extends React.Component {
     .then((books)=>{
       this.setState(()=> ({books}))
     })
-  }
+  };
 
   //update state with newid Book
-  updateStateofBooks=(book)=>{
+  updateStateOfBooks=(book)=>{
     this.setState({books: [...this.state.books.concat(book)]})
-   // console.log("booksArraynew",this.state.books);
-  }
+  };
 
   //shelf to shelf change
-  shelfToshelf=(e)=>{
+  shelfToShelf=(e)=>{
     let id = e.target.id;
     let shelf = e.target.value;
     console.log("sheftoshelf",id,shelf);
     //find the book and change the shelf value
     this.setState({books: [...this.state.books.filter((book)=> book.id===id ? book.shelf=shelf : book.shelf)]})
-  console.log("shelftoshelfbooks",this.state.books) 
-}
+  console.log("shelfToShelfbooks",this.state.books);
+};
      
   //bookshelf array that hods self title
-  bookshelfs = ["Currently Reading","Want to Read","Read"]
-
-  // //page navigate
-  // onNavigate = ()=>{
-  //   this.setState({showSearchPage : true})
-  // }
+  bookShelves = ["Currently Reading","Want to Read","Read"];
 
   render() {
-  console.log('books new array',this.state.books)
+  console.log('books new array',this.state.books);
     return (
       <div className="app">
       <Route exact path='/' render={()=>(
         <div>
            <Header/>
-           <Rack books={this.state.books} updateStateofBooks={this.updateStateofBooks} bookshelfs={this.bookshelfs} bookselftitle="Currently Reading" shelfname="currentlyReading" shelfToshelf={this.shelfToshelf}/>
-           <Rack books={this.state.books} updateStateofBooks={this.updateStateofBooks} bookshelfs={this.bookshelfs} bookselftitle="Want to Read" shelfname="wantToRead" shelfToshelf={this.shelfToshelf}/>
-           <Rack books={this.state.books} updateStateofBooks={this.updateStateofBooks} bookshelfs={this.bookshelfs} bookselftitle="Read" shelfname="read" shelfToshelf={this.shelfToshelf}/>  
+           <Rack books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} bookShelves={this.bookShelves} bookSelfTitle="Currently Reading" shelfName="currentlyReading" shelfToShelf={this.shelfToShelf}/>
+           <Rack books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} bookShelves={this.bookShelves} bookSelfTitle="Want to Read" shelfName="wantToRead" shelfToShelf={this.shelfToShelf}/>
+           <Rack books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} bookShelves={this.bookShelves} bookSelfTitle="Read" shelfName="read" shelfToShelf={this.shelfToShelf}/>  
         </div>
       )} />
-      <Route path='/Search' render={()=>(
+      <Route path='/search' render={()=>(
               <Search 
-              updateStateofBooks={this.updateStateofBooks} searchBooks={this.state.searchBooks} bookshelfs={this.bookshelfs} searchResults={this.searchResults} bookselftitle="Search Results" shelfname="searchResults" changeshelf={this.changeshelf}/>      
+              updateStateOfBooks={this.updateStateOfBooks} searchBooks={this.state.searchBooks} bookShelves={this.bookShelves} searchResults={this.searchResults} bookSelfTitle="Search Results" shelfName="searchResults" changeShelf={this.changeShelf}/>      
         
       )}/>
    </div>)    
