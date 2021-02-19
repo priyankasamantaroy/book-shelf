@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import * as BooksAPI from './BooksAPI';
+import {Link} from 'react-router-dom'
 
 export class Rack extends Component {
 
     render() {
-       // console.log("title",typeof(this.props.bookselftitle));
        //destructuring
        const {books,bookselftitle,shelfname, bookshelfs, shelfToshelf} = this.props;
-      // const {changeshelf} = this.props;
-        return ( 
-          
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>{bookselftitle}</h1>
-            </div>                
+        return (           
+          <div className="list-books">                         
             <div className="list-books-content">
+            <div className="open-search">
+          <Link to='/Search'>Add a book</Link>           
+                              
+        </div>
               <div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">{bookselftitle}</h2>
