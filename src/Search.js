@@ -49,7 +49,8 @@ export class Search extends Component {
               <div className="search-books-bar">
                 <Link  to="/" className="close-search">Close</Link>              
               <div className="search-books-input-wrapper">               
-                <input type="text" 
+                <input type="text"
+                value={this.state.query} 
                 placeholder="Search by title or author" 
                 onChange={(e)=>this.updateQuery(e.target.value)}/>
               </div>

@@ -14,11 +14,20 @@ class App extends React.Component {
   
   //using BooksAPI getALL method that fetch books data
   componentDidMount(){
-    BooksAPI.getAll()
+    localStorage.getItem('myStorage')? 
+    this.setState({books: JSON.parse(localStorage.getItem('myStorage'))}) : 
+    (BooksAPI.getAll()
     .then((books)=>{
       this.setState(()=> ({books}))
+      localStorage.setItem('myStorage',JSON.stringify(books))
     })
+     )     
   };
+
+  componentDidUpdate(){
+   localStorage.removeItem('myStorage');
+   localStorage.setItem('myStorage',JSON.stringify(this.state.books));       
+  }
 
   //update state with newid Book
   updateStateOfBooks=(book)=>{
