@@ -28,7 +28,7 @@ export class Rack extends Component {
                             <option value="none" selected> Move to...</option>                       
                              {bookShelves.map((bookshelf)=>(                      
                                bookshelf!== bookSelfTitle ?                               
-                               <option  value={bookshelf==="Currently Reading" ? "currentlyReading" : bookshelf==="Want to Read" ? "wantToRead" : "read"} >{bookshelf}</option> : ""))}
+                               <option  value={bookshelf==="Currently Reading" ? "currentlyReading" : bookshelf==="Want to Read" ? "wantToRead" : "read"} selected>{bookshelf}</option> : ""))}
                              </select> 
                             </div>
                           </div>

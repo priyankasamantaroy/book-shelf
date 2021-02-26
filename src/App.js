@@ -13,6 +13,7 @@ class App extends React.Component {
   };
   
   //using BooksAPI getALL method that fetch books data
+  //check local storage ? get items : call API and store in myStorage locally
   componentDidMount(){
     localStorage.getItem('myStorage')? 
     this.setState({books: JSON.parse(localStorage.getItem('myStorage'))}) : 
@@ -23,11 +24,11 @@ class App extends React.Component {
     })
      )     
   };
-
+//updating local storage
   componentDidUpdate(){
    localStorage.removeItem('myStorage');
-   localStorage.setItem('myStorage',JSON.stringify(this.state.books));       
-  }
+   localStorage.setItem('myStorage',JSON.stringify(this.state.books))        
+  };
 
   //update state with newid Book
   updateStateOfBooks=(book)=>{
@@ -43,7 +44,7 @@ class App extends React.Component {
     this.setState({books: [...this.state.books.filter((book)=> book.id===id ? book.shelf=shelf : book.shelf)]})
   console.log("shelfToShelfbooks",this.state.books);
 };
-     
+
   //bookshelf array that hods self title
   bookShelves = ["Currently Reading","Want to Read","Read"];
 
@@ -60,8 +61,8 @@ class App extends React.Component {
         </div>
       )} />
       <Route path='/search' render={()=>(
-              <Search 
-              updateStateOfBooks={this.updateStateOfBooks} searchBooks={this.state.searchBooks} bookShelves={this.bookShelves} searchResults={this.searchResults} bookSelfTitle="Search Results" shelfName="searchResults" changeShelf={this.changeShelf}/>      
+          <Search 
+          books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} /*searchBooks={this.state.searchBooks} */ bookShelves={this.bookShelves} searchResults={this.searchResults} bookSelfTitle="Search Results" shelfName="searchResults" changeShelf={this.changeShelf}/>   
         
       )}/>
    </div>)    

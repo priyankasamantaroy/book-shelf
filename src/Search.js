@@ -9,25 +9,37 @@ export class Search extends Component {
         searchBooks :[]  
     };
 
-    //query will update whateven entered in the input box
-    updateQuery =(query)=>{
-      this.setState(()=>({
-        query: query.trim()        
-      })      
-      )
-      BooksAPI.search(query,20)
-      .then((searchBooks)=>{
-      this.setState(()=> ({searchBooks: searchBooks}))
-    })
-  };
+    //query will update whatever entered in the input box and will save as local storage
+      updateQuery =(query)=>{
+        query=query.trim()
+        this.setState(()=>({
+          query: query        
+        })      
+        )
+        // this.state.query === "" ?
+        query === "" ?
+        this.setState({searchBooks: []}) :
+        BooksAPI.search(query,20)
+        .then((searchBooks)=>{searchBooks!== undefined ? 
+          this.setState({searchBooks: searchBooks.filter((searchBook)=>(searchBook.authors!== undefined && searchBook.imageLinks!== undefined))}) :this.setState({searchBooks: []})
+      // localStorage.setItem('mySearchStorage',JSON.stringify(searchBooks))
+      })
+      console.log('Query', query)
+    };
+  // //updating local storage
+  // componentdidUpdate(){
+  //   localStorage.removeItem('mySearchStorage');
+  //   localStorage.setItem('mySearchStorage',JSON.stringify(this.state.searchBooks))        
+  //  };
 
   //change shelf
   changeShelf=(e)=>{
       let id = e.target.id;
       let shelf = e.target.value;  
       console.log("My Value", id, shelf);
+      
       //remove id from searchBooks that has selected and update searchBooks list
-      this.setState({searchBooks: [...this.state.searchBooks.filter(searchBook => searchBook.id !== id)]})
+      this.setState({searchBooks: [...this.state.searchBooks.map(searchBook => searchBook.id === id ?  searchBook.shelf : "none")]})
     /*update the removed id with a book object along with shelf value 
     concate the updated new book with bookslist */
       BooksAPI.get(id)
@@ -35,14 +47,15 @@ export class Search extends Component {
         book.shelf=shelf
         return book
       })
-      .then((book)=> this.props.updateStateOfBooks(book))
-  };      
+      .then((book)=>this.props.updateStateOfBooks(book))
+  };
 
-    render() {
+    render(){
       console.log('res', this.state.data);
-      console.log('searchBooks', this.state.searchBooks);
+      console.log('State searchBooks', this.state.searchBooks);
       //destructuring
-      const {bookSelfTitle,shelfName,bookShelves} = this.props;
+      const {books,bookSelfTitle,shelfName,bookShelves} = this.props;
+     // const selected = shelfName===bookSelfTitle ? selected : "";
         return (
             <div>
               <div className="search-books">
@@ -50,8 +63,8 @@ export class Search extends Component {
                 <Link  to="/" className="close-search">Close</Link>              
               <div className="search-books-input-wrapper">               
                 <input type="text"
-                value={this.state.query} 
-                placeholder="Search by title or author" 
+                //value={this.state.query} 
+                placeholder="Search by Title or Author" 
                 onChange={(e)=>this.updateQuery(e.target.value)}/>
               </div>
             </div>
@@ -64,10 +77,10 @@ export class Search extends Component {
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer"> 
                             <select id={book.id} onChange={(e)=> this.changeShelf(e)}>
-                           <option value="none" selected> Select Below Options</option>                 
+                           <option value="none" > None </option>                 
                              {bookShelves.map((bookshelf)=>(                      
                               bookshelf!== "" ?                               
-                               <option value={bookshelf==='Currently Reading' ? 'currentlyReading' : bookshelf==='Want to Read' ? 'wantToRead' : 'read'}>{bookshelf}</option> : ""))}
+                               <option value={bookshelf==='Currently Reading' ? 'currentlyReading' : bookshelf==='Want to Read' ? 'wantToRead' : 'read'} selected >{bookshelf}</option> : "none"))}
                              </select> 
                             </div>
                           </div>
@@ -80,11 +93,11 @@ export class Search extends Component {
             </div>
           </div> 
         </div>
-    
       
 
         )
     }
-}
+
+  }
 
 export default Search
