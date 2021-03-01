@@ -45,8 +45,13 @@ class App extends React.Component {
   console.log("shelfToShelfbooks",this.state.books);
 };
 
-  //bookshelf array that hods self title
-  bookShelves = ["Currently Reading","Want to Read","Read"];
+  //Shelf name object
+  shelfObject = {
+    "none": "None",
+    "currentlyReading" : "Currently Reading",
+    "wantToRead": "Want to Read",
+    "read": "Read"
+  }
 
   render() {
   console.log('books new array',this.state.books);
@@ -55,14 +60,14 @@ class App extends React.Component {
       <Route exact path='/' render={()=>(
         <div>
            <Header/>
-           <Rack books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} bookShelves={this.bookShelves} bookSelfTitle="Currently Reading" shelfName="currentlyReading" shelfToShelf={this.shelfToShelf}/>
-           <Rack books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} bookShelves={this.bookShelves} bookSelfTitle="Want to Read" shelfName="wantToRead" shelfToShelf={this.shelfToShelf}/>
-           <Rack books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} bookShelves={this.bookShelves} bookSelfTitle="Read" shelfName="read" shelfToShelf={this.shelfToShelf}/>  
+           <Rack books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} bookSelfTitle="Currently Reading" shelfName="currentlyReading" shelfToShelf={this.shelfToShelf} shelfObject={this.shelfObject}/>
+           <Rack books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} bookSelfTitle="Want to Read" shelfName="wantToRead" shelfToShelf={this.shelfToShelf} shelfObject={this.shelfObject}/>
+           <Rack books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} bookSelfTitle="Read" shelfName="read" shelfToShelf={this.shelfToShelf} shelfObject={this.shelfObject}/>  
         </div>
       )} />
       <Route path='/search' render={()=>(
           <Search 
-          books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} /*searchBooks={this.state.searchBooks} */ bookShelves={this.bookShelves} searchResults={this.searchResults} bookSelfTitle="Search Results" shelfName="searchResults" changeShelf={this.changeShelf}/>   
+          books={this.state.books} updateStateOfBooks={this.updateStateOfBooks} searchResults={this.searchResults} bookSelfTitle="Search Results" shelfName="searchResults" changeShelf={this.changeShelf} bookShelvesLong={this.bookShelvesLong} shelfObject={this.shelfObject}/>   
         
       )}/>
    </div>)    

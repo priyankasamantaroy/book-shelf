@@ -5,57 +5,39 @@ import {Link} from 'react-router-dom'
 export class Search extends Component {
 
     state = {
+        query: "",
         searchBooks :[]  
     };
 
     //query will update whatever entered in the input box and will save as local storage
       updateQuery =(query)=>{
         query=query.trim()
-        
-        if(query === ""){
-          this.setState({searchBooks: []})
-        }
-        else{
-          BooksAPI.search(query, 20)
-            .then(searchBooks => this.preProcessing(searchBooks))
-            .then(searchBooks => this.setState({searchBooks: searchBooks})) 
-           // .catch(error => console.log('errormessage:',error));//this.setState({searchBooks: []}))        
-        } 
-        
+        this.setState(()=>({
+          query: query        
+        })      
+        )
+        // this.state.query === "" ?
+        query === "" ?
+        this.setState({searchBooks: []}) :
+        BooksAPI.search(query,20)
+        .then((searchBooks)=>{searchBooks!== undefined ? 
+          this.setState({searchBooks: searchBooks.filter((searchBook)=>(searchBook.authors!== undefined && searchBook.imageLinks!== undefined))}) :this.setState({searchBooks: []})
       // localStorage.setItem('mySearchStorage',JSON.stringify(searchBooks))
+      })
       console.log('Query', query)
-    }; //end of update
-
-
-    preProcessing(searchResults){
-      console.log("API results stored var", searchResults)
-      if(searchResults!== undefined){
-        searchResults = searchResults.filter((searchBook)=>(
-          searchBook.authors!== undefined && searchBook.imageLinks!== undefined))    
-          
-          for(let i=0; i<searchResults.length; i++){
-            for(let j=0; j<this.props.books.length; j++){
-              if(searchResults[i].id === this.props.books[j].id){
-                searchResults[i].shelf = this.props.books[j].shelf
-              }
-            }
-          }
-    
-      }//if end
-      else{
-        searchResults=[]
-      }
-      return searchResults;
-    };//end of preProcessing
-
-
+    };
+  // //updating local storage
+  // componentdidUpdate(){
+  //   localStorage.removeItem('mySearchStorage');
+  //   localStorage.setItem('mySearchStorage',JSON.stringify(this.state.searchBooks))        
+  //  };
 
   //change shelf
   changeShelf=(e)=>{
       let id = e.target.id;
       let shelf = e.target.value;  
       console.log("My Value", id, shelf);
-
+      
       //remove id from searchBooks that has selected and update searchBooks list
       this.setState({searchBooks: [...this.state.searchBooks.map(searchBook => searchBook.id === id ?  searchBook.shelf : "none")]})
     /*update the removed id with a book object along with shelf value 
@@ -69,9 +51,11 @@ export class Search extends Component {
   };
   
     render(){
+      console.log('res', this.state.data);
       console.log('State searchBooks', this.state.searchBooks);
       //destructuring
-      const {books,bookSelfTitle,shelfName,bookShelves, bookShelvesLong,shelfObject} = this.props
+      const {books,bookSelfTitle,shelfName,bookShelves} = this.props
+     // const selected = shelfName===bookSelfTitle ? selected : "";
         return (
             <div>
               <div className="search-books">
@@ -93,14 +77,17 @@ export class Search extends Component {
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer"> 
                             <select id={book.id} onChange={(e)=> this.changeShelf(e)}>                            
-                            {
-                              Object.keys(shelfObject).map((bs)=>(
-                                book.shelf===bs?
-                                <option value={bs} selected>{shelfObject[bs]}</option> :
-                                bs==="none"? <option value="" selected>None</option> :
-                                <option value={bs}>{shelfObject[bs]}</option>
-                              ))
-                            }
+                            {books.map((rackbook)=>(
+                              rackbook.id===book.id ? (
+                                  <option value="none">None</option> 
+                                  {bookShelves.map((bookshelf)=>(
+                                    bookshelf===rackbook.shelf ? ( 
+                                    <option value={bookshelf} selected >{bookshelf}</option>)
+                                    : <option value={bookshelf}>{bookshelf}</option>))})
+                              : 
+                               (<option value="none" selected>None</option>
+                                 {bookShelves.map((bookshelf)=>(<option value={bookshelf}>{bookshelf}</option>))})
+                              ))}                                              
                             </select> 
                             </div>
                           </div>
@@ -111,7 +98,8 @@ export class Search extends Component {
              </ol>
             </div>
           </div> 
-        </div>    
+        </div>
+      
 
         )
     }

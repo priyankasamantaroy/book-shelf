@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 export class Rack extends Component {
     render() {
        //destructuring
-       const {books,bookSelfTitle,shelfName, bookShelves, shelfToShelf} = this.props;
+       const {books,bookSelfTitle,shelfName, shelfToShelf,shelfObject} = this.props;
         return (           
           <div className="list-books">                         
             <div className="list-books-content">
@@ -25,10 +25,11 @@ export class Rack extends Component {
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer"> 
                             <select id={book.id} onChange={(e)=>shelfToShelf(e)}>
-                            <option value="none" selected> Move to...</option>                       
-                             {bookShelves.map((bookshelf)=>(                      
-                               bookshelf!== bookSelfTitle ?                               
-                               <option  value={bookshelf==="Currently Reading" ? "currentlyReading" : bookshelf==="Want to Read" ? "wantToRead" : "read"} selected>{bookshelf}</option> : ""))}
+                            <option value="moveTo" selected> Move to...</option>                       
+                             {Object.keys(shelfObject).map((bookshelf)=>(                       
+                               shelfObject[bookshelf]!== 'None' &&  
+                               shelfObject[bookshelf]!== bookSelfTitle ?                               
+                               <option  value={bookshelf} >{shelfObject[bookshelf]}</option> : ""))}
                              </select> 
                             </div>
                           </div>
