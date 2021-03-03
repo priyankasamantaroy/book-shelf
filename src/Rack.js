@@ -22,14 +22,14 @@ export class Rack extends Component {
                         <li key={book.id}>
                           <div className="book">
                             <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193,backgroundImage:`url(${book.imageLinks.smallThumbnail})`}}></div>
+                            <div className="book-cover" style={{ width: 128, height: 193,backgroundImage:`url(${book.imageLinks.thumbnail})`}}></div>
                             <div className="book-shelf-changer"> 
                             <select id={book.id} onChange={(e)=>shelfToShelf(e)}>
                             <option value="moveTo" selected> Move to...</option>                       
                              {Object.keys(shelfObject).map((bookshelf)=>(                       
                                shelfObject[bookshelf]!== 'None' &&  
                                shelfObject[bookshelf]!== bookSelfTitle ?                               
-                               <option  value={bookshelf} >{shelfObject[bookshelf]}</option> : ""))}
+                               <option  value={bookshelf} >{shelfObject[bookshelf]}</option> : "moveTo"))}
                              </select> 
                             </div>
                           </div>

@@ -31,8 +31,9 @@ class App extends React.Component {
   };
 
   //update state with newid Book
-  updateStateOfBooks=(book)=>{
-    this.setState({books: [...this.state.books.concat(book)]})
+  updateStateOfBooks=(book,id,shelf)=>{ 
+    book.id!==id?   
+    this.setState({books: [...this.state.books.concat(book)]}): this.setState({books: [...this.state.books.filter((book)=> book.id===id ? book.shelf=shelf : "None")]})
   };
 
   //shelf to shelf change

@@ -55,17 +55,16 @@ export class Search extends Component {
       let id = e.target.id;
       let shelf = e.target.value;  
       console.log("My Value", id, shelf);
-
-      //remove id from searchBooks that has selected and update searchBooks list
-      this.setState({searchBooks: [...this.state.searchBooks.map(searchBook => searchBook.id === id ?  searchBook.shelf : "none")]})
+      //remo id from searchBooks that has selected and update searchBooks list
+     // this.setState({searchBooks: [...this.state.searchBooks.filter(searchBook => searchBook.id === id ?  searchBook.shelf=shelf : "None")]})
     /*update the removed id with a book object along with shelf value 
     concate the updated new book with bookslist */
       BooksAPI.get(id)
       .then((book)=>{
-        book.shelf=shelf
+       // book.shelf=shelf
         return book
       })
-      .then((book)=>this.props.updateStateOfBooks(book))
+      .then((book)=>this.props.updateStateOfBooks(book,id,shelf))
   };
   
     render(){
@@ -90,7 +89,7 @@ export class Search extends Component {
                          <li key={book.id}>
                          <div className="book">
                             <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.smallThumbnail})` }}></div>
+                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.thumbnail})` }}></div>
                             <div className="book-shelf-changer"> 
                             <select id={book.id} onChange={(e)=> this.changeShelf(e)}>                            
                             {
