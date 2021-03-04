@@ -1,0 +1,7 @@
+{
+    "editor.fontSize": 17,
+    "editor.snippetSuggestions": "top",
+    "editor.cursorSurroundingLines": 2,
+    "editor.cursorSurroundingLinesStyle": "all",
+    "editor.cursorWidth": 1
+}

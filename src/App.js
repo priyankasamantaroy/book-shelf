@@ -15,25 +15,79 @@ class App extends React.Component {
   //using BooksAPI getALL method that fetch books data
   //check local storage ? get items : call API and store in myStorage locally
   componentDidMount(){
-    localStorage.getItem('myStorage')? 
-    this.setState({books: JSON.parse(localStorage.getItem('myStorage'))}) : 
+    if(localStorage.getItem('myStorage'))
+    {
+      console.log("storage",JSON.parse(localStorage.getItem('myStorage')).length)
+      JSON.parse(localStorage.getItem('myStorage')).length>0 ?
+      this.setState({books: JSON.parse(localStorage.getItem('myStorage'))}) : 
+      BooksAPI.getAll()
+      .then((books)=>{
+        this.setState(()=>({books}))
+        localStorage.setItem('myStorage',JSON.stringify(books))
+      })//api end 
+    }
+    else
+  {
     (BooksAPI.getAll()
-    .then((books)=>{
-      this.setState(()=> ({books}))
-      localStorage.setItem('myStorage',JSON.stringify(books))
-    })
-     )     
-  };
+  .then((books)=>{
+    this.setState(()=> ({books}))
+    localStorage.setItem('myStorage',JSON.stringify(books))
+  })
+  )//api end  
+  }  
+  };//end of compodidmou
+
+
 //updating local storage
   componentDidUpdate(){
    localStorage.removeItem('myStorage');
    localStorage.setItem('myStorage',JSON.stringify(this.state.books))        
   };
 
-  //update state with newid Book
-  updateStateOfBooks=(book,id,shelf)=>{ 
-    book.id!==id?   
-    this.setState({books: [...this.state.books.concat(book)]}): this.setState({books: [...this.state.books.filter((book)=> book.id===id ? book.shelf=shelf : "None")]})
+  //update state with id if the id is not found in rack else will replace the shelf name and update the old id 
+  //IN search page books selected none will filter that book out from rack
+  updateStateOfBooks=(book,shelf)=>{
+    var result = this.state.books;
+    var notFound=true;
+    for(let i=0;i<result.length; i++){
+      if(book.id===result[i].id){
+        if(shelf!=="none"){
+           result[i].shelf=shelf;
+           this.setState({books: result});
+          console.log("shelfchangedbook");
+        }
+        else{
+         this.setState({books: result.filter(resultBook=>resultBook.id!==book.id)});
+          console.log("filtered book");
+        }
+        notFound=false;
+      }
+    }//for closed
+      if(notFound){
+        if(shelf!=="none"){
+          book.shelf= shelf;
+          const newResult=result.concat([book]);
+          this.setState({books: newResult})
+          console.log("addedbook");
+      
+        }
+      }
+    
+    console.log("print",this.state.books);
+
+
+
+
+
+    // this.state.books.map(rackBook => rackBook.id===book.id ? 
+    //   shelf==="None"? 
+    //   const a = this.state.books.filter(rb=>rb.id!==book.id)
+    //     this.setState({books: [...this.state.books.filter((rackBook)=>rackBook.id!==book.id )]}) :
+    //     this.setState({books: [...this.state.books.map(rackBook=>rackBook.id===book.id? rackBook.shelf=shelf : rackBook.shelf)]}) 
+    //   :    
+    //     this.setState({books: [...this.state.books.concat(book)]})
+    // )//map end
+
   };
 
   //shelf to shelf change

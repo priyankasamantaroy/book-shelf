@@ -61,10 +61,10 @@ export class Search extends Component {
     concate the updated new book with bookslist */
       BooksAPI.get(id)
       .then((book)=>{
-       // book.shelf=shelf
+       //book.shelf=shelf
         return book
       })
-      .then((book)=>this.props.updateStateOfBooks(book,id,shelf))
+      .then((book)=>this.props.updateStateOfBooks(book,shelf))
   };
   
     render(){
@@ -96,7 +96,7 @@ export class Search extends Component {
                               Object.keys(shelfObject).map((bs)=>(
                                 book.shelf===bs?
                                 <option value={bs} selected>{shelfObject[bs]}</option> :
-                                bs==="none"? <option value="" selected>None</option> :
+                                bs==="none"? <option value="none" selected>None</option> :
                                 <option value={bs}>{shelfObject[bs]}</option>
                               ))
                             }
