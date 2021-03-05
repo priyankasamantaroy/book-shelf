@@ -70,7 +70,7 @@ export class Search extends Component {
     render(){
       console.log('State searchBooks', this.state.searchBooks);
       //destructuring
-      const {books,bookSelfTitle,shelfName,bookShelves, bookShelvesLong,shelfObject} = this.props
+      const {shelfObject} = this.props
         return (
             <div>
               <div className="search-books">
@@ -84,6 +84,7 @@ export class Search extends Component {
               </div>
             </div>
             <div className="search-books-results">
+              <h2>Search Results: {this.state.searchBooks.length} Books</h2>
               <ol className="books-grid">
             {this.state.searchBooks.map((book)=>(
                          <li key={book.id}>
@@ -91,20 +92,20 @@ export class Search extends Component {
                             <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.thumbnail})` }}></div>
                             <div className="book-shelf-changer"> 
-                            <select id={book.id} onChange={(e)=> this.changeShelf(e)}>                            
+                            <select defaultValue={book.shelf} id={book.id} onChange={(e)=> this.changeShelf(e)}>                            
                             {
-                              Object.keys(shelfObject).map((bs)=>(
+                              Object.keys(shelfObject).map((bs,index)=>(
                                 book.shelf===bs?
-                                <option value={bs} selected>{shelfObject[bs]}</option> :
-                                bs==="none"? <option value="none" selected>None</option> :
-                                <option value={bs}>{shelfObject[bs]}</option>
+                                <option key={index} value={bs} >{shelfObject[bs]}</option> :
+                                bs==="none"? <option key={index} value="none" >None</option> :
+                                <option key={index} value={bs}>{shelfObject[bs]}</option>
                               ))
                             }
                             </select> 
                             </div>
                           </div>
                           <div className="book-title">Title:{book.title}</div>
-                          <div className="book-authors">Author:{book.authors.map((author)=> <span>{author}</span>)}</div>
+                          <div className="book-authors">Author:{book.authors.map((author,index)=> <span key={index}>{author}</span>)}</div>
                         </div>
                       </li>))}
              </ol>

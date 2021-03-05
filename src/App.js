@@ -75,19 +75,6 @@ class App extends React.Component {
     
     console.log("print",this.state.books);
 
-
-
-
-
-    // this.state.books.map(rackBook => rackBook.id===book.id ? 
-    //   shelf==="None"? 
-    //   const a = this.state.books.filter(rb=>rb.id!==book.id)
-    //     this.setState({books: [...this.state.books.filter((rackBook)=>rackBook.id!==book.id )]}) :
-    //     this.setState({books: [...this.state.books.map(rackBook=>rackBook.id===book.id? rackBook.shelf=shelf : rackBook.shelf)]}) 
-    //   :    
-    //     this.setState({books: [...this.state.books.concat(book)]})
-    // )//map end
-
   };
 
   //shelf to shelf change
@@ -105,8 +92,9 @@ class App extends React.Component {
     "none": "None",
     "currentlyReading" : "Currently Reading",
     "wantToRead": "Want to Read",
-    "read": "Read"
-  }
+    "read": "Read",
+   
+  };
 
   render() {
   console.log('books new array',this.state.books);

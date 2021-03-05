@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as BooksAPI from './BooksAPI';
 import {Link} from 'react-router-dom'
 
 export class Rack extends Component {
@@ -17,24 +16,24 @@ export class Rack extends Component {
                   <h2 className="bookshelf-title">{bookSelfTitle}</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">  
-                      {books.map((book)=>(
+                      {books.map((book,index)=>(
                         book.shelf === shelfName ? 
-                        <li key={book.id}>
+                        <li key={index}>
                           <div className="book">
                             <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193,backgroundImage:`url(${book.imageLinks.thumbnail})`}}></div>
                             <div className="book-shelf-changer"> 
                             <select id={book.id} onChange={(e)=>shelfToShelf(e)}>
-                            <option value="moveTo" selected> Move to...</option>                       
-                             {Object.keys(shelfObject).map((bookshelf)=>(                       
+                            <option value="moveTo"> Move to...</option>                       
+                             {Object.keys(shelfObject).map((bookshelf,index)=>(                       
                                shelfObject[bookshelf]!== 'None' &&  
                                shelfObject[bookshelf]!== bookSelfTitle ?                               
-                               <option  value={bookshelf} >{shelfObject[bookshelf]}</option> : "moveTo"))}
+                               <option key={index} value={bookshelf} >{shelfObject[bookshelf]}</option> : "moveTo"))}
                              </select> 
                             </div>
                           </div>
                           <div className="book-title">Title:{book.title}</div>
-                          <div className="book-authors">Author:{book.authors.map((author)=> <span>{author}</span>)}</div>
+                          <div className="book-authors">Author:{book.authors.map((author,index)=> <span key={index}>{author}</span>)}</div>
                         </div>
                       </li>       
                       :  ""))}
