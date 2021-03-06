@@ -17,7 +17,7 @@ class App extends React.Component {
   componentDidMount(){
     if(localStorage.getItem('myStorage'))
     {
-      console.log("storage",JSON.parse(localStorage.getItem('myStorage')).length)
+      //console.log("storage",JSON.parse(localStorage.getItem('myStorage')).length)
       JSON.parse(localStorage.getItem('myStorage')).length>0 ?
       this.setState({books: JSON.parse(localStorage.getItem('myStorage'))}) : 
       BooksAPI.getAll()
@@ -54,11 +54,11 @@ class App extends React.Component {
         if(shelf!=="none"){
            result[i].shelf=shelf;
            this.setState({books: result});
-          console.log("shelfchangedbook");
+          //console.log("shelfchangedbook");
         }
         else{
          this.setState({books: result.filter(resultBook=>resultBook.id!==book.id)});
-          console.log("filtered book");
+          //console.log("filtered book");
         }
         notFound=false;
       }
@@ -68,12 +68,12 @@ class App extends React.Component {
           book.shelf= shelf;
           const newResult=result.concat([book]);
           this.setState({books: newResult})
-          console.log("addedbook");
+          //console.log("addedbook");
       
         }
       }
     
-    console.log("print",this.state.books);
+    //console.log("print",this.state.books);
 
   };
 
@@ -81,10 +81,10 @@ class App extends React.Component {
   shelfToShelf=(e)=>{
     let id = e.target.id;
     let shelf = e.target.value;
-    console.log("sheftoshelf",id,shelf);
+    //console.log("sheftoshelf",id,shelf);
     //find the book and change the shelf value
     this.setState({books: [...this.state.books.filter((book)=> book.id===id ? book.shelf=shelf : book.shelf)]})
-  console.log("shelfToShelfbooks",this.state.books);
+  //console.log("shelfToShelfbooks",this.state.books);
 };
 
   //Shelf name object
@@ -97,7 +97,7 @@ class App extends React.Component {
   };
 
   render() {
-  console.log('books new array',this.state.books);
+  //console.log('books new array',this.state.books);
     return (
       <div className="app">
       <Route exact path='/' render={()=>(
