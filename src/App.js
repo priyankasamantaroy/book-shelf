@@ -74,17 +74,22 @@ class App extends React.Component {
       }
     
     //console.log("print",this.state.books);
-
   };
 
   //shelf to shelf change
   shelfToShelf=(e)=>{
     let id = e.target.id;
-    let shelf = e.target.value;
-    //console.log("sheftoshelf",id,shelf);
-    //find the book and change the shelf value
-    this.setState({books: [...this.state.books.filter((book)=> book.id===id ? book.shelf=shelf : book.shelf)]})
-  //console.log("shelfToShelfbooks",this.state.books);
+    let shelf = e.target.value;    
+    if(shelf!=='none'){
+      BooksAPI.get(id)
+    .then(book=> BooksAPI.update(book,shelf)
+    .then((resobject) => resobject[shelf].filter(resobId => resobId===id).map(resobId=>this.updateStateOfBooks(book, shelf))))
+    }
+    else{
+      this.setState({books: this.state.books.filter(resultBook=>resultBook.id!==id)});
+    }
+    //console.log("shelfToShelfbooks",this.state.books);
+
 };
 
   //Shelf name object
@@ -95,6 +100,7 @@ class App extends React.Component {
     "read": "Read",
    
   };
+
 
   render() {
   //console.log('books new array',this.state.books);

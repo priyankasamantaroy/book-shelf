@@ -65,8 +65,6 @@ export class Search extends Component {
       let id = e.target.id;
       let shelf = e.target.value;  
       //console.log("My Value", id, shelf);
-      //remo id from searchBooks that has selected and update searchBooks list
-     // this.setState({searchBooks: [...this.state.searchBooks.filter(searchBook => searchBook.id === id ?  searchBook.shelf=shelf : "None")]})
     /*update the removed id with a book object along with shelf value 
     concate the updated new book with bookslist */
       BooksAPI.get(id)

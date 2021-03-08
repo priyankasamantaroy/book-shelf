@@ -44,7 +44,12 @@ We need to follow these instructions only.
 # How it works/Features of the App
 
 - The main page contains 3 shelves: Currently Reading, Want to read and Read.
-- Each book object will contain a drop down box that displays shelves other than the current shelf in which the book presently in.
+- Each book object will contain a drop down box that displays 4 options:
+  1. "Currently Reading"
+  2. "want to Read"
+  3. "Read"
+  4. "None"
+- If "None" has been selected in main page then the book will removed from the state.
 - User can change the shelves within racks if they wanted to.
 - The same books will be displayed even after refreshing the browser.
 - The main page is linked to Search page.the Search page contains a searchbar where user can search their required book.

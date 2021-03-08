@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 
 export class Rack extends Component {
     render() {
@@ -23,13 +23,17 @@ export class Rack extends Component {
                             <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193,backgroundImage:`url(${book.imageLinks.thumbnail})`}}></div>
                             <div className="book-shelf-changer"> 
-                            <select id={book.id} onChange={(e)=>shelfToShelf(e)}>
-                            <option value="moveTo"> Move to...</option>                       
-                             {Object.keys(shelfObject).map((bookshelf,index)=>(                       
-                               shelfObject[bookshelf]!== 'None' &&  
-                               shelfObject[bookshelf]!== bookSelfTitle ?                               
-                               <option key={index} value={bookshelf} >{shelfObject[bookshelf]}</option> : "moveTo"))}
-                             </select> 
+                            <select defaultValue={book.shelf} id={book.id} onChange={(e)=> shelfToShelf(e)}>                            
+                            {
+                              Object.keys(shelfObject).map((bs,index)=>(
+                                book.shelf===bs?
+                                <option key={index} value={bs} >{shelfObject[bs]}</option> :
+                                bs==="none"? <option key={index} value="none" >None</option> :
+                                <option key={index} value={bs}>{shelfObject[bs]}</option>
+                              ))
+                            }
+                            </select> 
+                                               
                             </div>
                           </div>
                           <div className="book-title">Title:{book.title}</div>
